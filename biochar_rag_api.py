@@ -40,9 +40,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 import uvicorn
 
-# ML libraries
-from sentence_transformers import SentenceTransformer
-from sklearn.metrics.pairwise import cosine_similarity
+# ML libraries - temporarily commented out for basic deployment
+# from sentence_transformers import SentenceTransformer
+# from sklearn.metrics.pairwise import cosine_similarity
+
+# Temporary imports for basic deployment
+import warnings
+warnings.filterwarnings("ignore")
 
 # Together AI integration
 try:
@@ -215,9 +219,9 @@ class RAGService:
     def load_models(self):
         """Load embedding model and initialize Together AI client."""
         try:
-            # Load embedding model
-            self.embedding_model = SentenceTransformer(Config.EMBEDDING_MODEL, device='cpu')
-            logger.info(f"Loaded embedding model: {Config.EMBEDDING_MODEL}")
+            # Temporarily disable ML models for basic deployment
+            # self.embedding_model = SentenceTransformer(Config.EMBEDDING_MODEL, device='cpu')
+            # logger.info(f"Loaded embedding model: {Config.EMBEDDING_MODEL}")
             
             # Initialize Together AI client
             if not Config.TOGETHER_API_KEY:
@@ -239,30 +243,22 @@ class RAGService:
     
     def retrieve_relevant_chunks(self, query: str, max_chunks: int = Config.MAX_CONTEXT_CHUNKS) -> List[Dict]:
         """Retrieve most relevant chunks for a query."""
-        if self.embedding_model is None or self.embeddings is None:
-            raise HTTPException(status_code=500, detail="Models not loaded")
+        # Temporarily return mock data for basic deployment
+        logger.info(f"Mock retrieval for query: {query}")
         
-        # Encode query
-        query_embedding = self.embedding_model.encode([query], convert_to_numpy=True)
+        # Return mock chunks
+        mock_chunks = [
+            {
+                'chunk_id': f'mock_chunk_{i}',
+                'doc_id': f'mock_doc_{i}',
+                'content': f'Mock content for query: {query} (chunk {i})',
+                'similarity': 0.8 - (i * 0.1),
+                'tokens': 100
+            }
+            for i in range(min(max_chunks, 3))
+        ]
         
-        # Compute similarities
-        similarities = cosine_similarity(query_embedding, self.embeddings)[0]
-        
-        # Get top chunks
-        top_indices = np.argsort(similarities)[::-1][:max_chunks]
-        
-        retrieved_chunks = []
-        for idx in top_indices:
-            chunk_data = self.chunks_df.iloc[idx]
-            retrieved_chunks.append({
-                'chunk_id': chunk_data['chunk_id'],
-                'doc_id': chunk_data['doc_id'],
-                'content': chunk_data['chunk_text'],
-                'similarity': float(similarities[idx]),
-                'tokens': int(chunk_data['chunk_tokens'])
-            })
-        
-        return retrieved_chunks
+        return mock_chunks
     
     def generate_response(self, query: str, context_chunks: List[Dict]) -> str:
         """Generate response using DeepSeek V2 Chat with retrieved context."""
