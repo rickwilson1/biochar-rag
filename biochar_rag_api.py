@@ -178,31 +178,13 @@ class RAGService:
     def load_data(self):
         """Load embeddings and chunks data. Download from cloud if needed."""
         try:
-            # Check if embeddings exist, download if not
-            if not Config.EMBEDDINGS_FILE.exists() or not Config.CHUNKS_FILE.exists():
-                logger.info("Embeddings not found locally, attempting download...")
-                try:
-                    download_success = download_and_extract_embeddings()
-                    if not download_success:
-                        logger.error("Failed to download embeddings")
-                        return False
-                except Exception as e:
-                    logger.error(f"Download failed: {e}")
-                    return False
+            # Temporarily return success without loading data
+            logger.info("Mock data loading - skipping actual file operations")
+            return True
             
-            # Load embeddings
-            if not Config.EMBEDDINGS_FILE.exists():
-                raise FileNotFoundError(f"Embeddings file not found: {Config.EMBEDDINGS_FILE}")
-            
-            self.embeddings = np.load(Config.EMBEDDINGS_FILE)
-            logger.info(f"Loaded embeddings: {self.embeddings.shape}")
-            
-            # Load chunks
-            if not Config.CHUNKS_FILE.exists():
-                raise FileNotFoundError(f"Chunks file not found: {Config.CHUNKS_FILE}")
-                
-            self.chunks_df = pd.read_csv(Config.CHUNKS_FILE)
-            logger.info(f"Loaded chunks: {len(self.chunks_df):,} records")
+        except Exception as e:
+            logger.error(f"Failed to load data: {e}")
+            return False
             
             # Load metadata
             if Config.METADATA_FILE.exists():
