@@ -1,34 +1,14 @@
-# Biochar RAG API Requirements
-# Optimized for CPU deployment on Render
-
-# Core API framework
-fastapi==0.119.1
-uvicorn[standard]==0.38.0
-pydantic==2.8.2
-
-# Together AI for LLaMA models
+# Biochar RAG API Requirements - Simplified for Render
+fastapi==0.104.1
+uvicorn==0.24.0
+pydantic==2.5.0
 together==1.3.4
-
-# Streamlit for frontend
-streamlit==1.50.0
-
-# ML and embedding libraries (CPU optimized) - Fixed PyTorch installation
---index-url https://download.pytorch.org/whl/cpu
-torch==2.4.1+cpu
-transformers==4.46.2
-tokenizers==0.20.3
-sentence-transformers==3.2.1
-
-# Scientific computing
-numpy==1.26.4
-pandas==2.2.3
-scikit-learn==1.5.2
-
-# Utilities
-python-multipart==0.0.12
-python-dotenv==1.0.1
-requests==2.32.3
-tqdm==4.66.5
-
-# Production server
-gunicorn==23.0.0
+sentence-transformers==2.2.2
+torch==2.1.0
+transformers==4.35.0
+numpy==1.24.3
+pandas==2.0.3
+scikit-learn==1.3.2
+python-dotenv==1.0.0
+requests==2.31.0
+gunicorn==21.2.0
