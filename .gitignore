@@ -1,0 +1,94 @@
+# Large data files (too big for GitHub)
+*.csv
+*.mbox
+*.json
+groupchats.mbox
+biochar_chunks.csv
+biochar_chunks.json
+raw_emails.csv
+attachments_*.csv
+biochar_corpus*.csv
+
+# Model files
+*.gguf
+models/
+
+# Cache and temporary files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Environment files
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Large attachment directory
+attachments/
+
+# Large data files (too big for GitHub without LFS)
+*.csv
+*.mbox
+*.json
+*.pkl
+*.npy
+groupchats.mbox
+biochar_chunks.csv
+biochar_chunks.json
+raw_emails.csv
+attachments_*.csv
+biochar_corpus*.csv
+
+# Embeddings (too large for regular Git - use LFS or external storage)
+embeddings_output/*.csv
+embeddings_output/*.pkl
+embeddings_output/*.npy
+embeddings_output/*.json
+# Keep only the small metadata file
+!embeddings_output/embedding_metadata.json
+
+# Logs
+*.log
+
+# Development versions
+development\ versions/

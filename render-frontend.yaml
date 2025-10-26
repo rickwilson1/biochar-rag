@@ -1,0 +1,19 @@
+# Render configuration for Streamlit frontend only
+version: "1"
+
+services:
+  - type: web
+    name: biochar-rag-frontend
+    env: python
+    buildCommand: "pip install -r streamlit-requirements.txt"
+    startCommand: "streamlit run streamlit_app.py --server.port $PORT --server.address 0.0.0.0 --server.headless true"
+    plan: starter
+    
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11"
+      - key: API_URL
+        value: "https://biochar-rag-api.onrender.com"  # Update with your actual API URL
+    
+    # Auto-deploy on git push
+    autoDeploy: true

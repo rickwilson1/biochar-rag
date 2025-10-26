@@ -1,0 +1,79 @@
+# Render deployment configuration for Biochar RAG System# Render deployment configuration
+
+version: "1"version: "1"
+
+
+
+services:services:
+
+  # FastAPI Backend Service  - type: web
+
+  - type: web    name: biochar-rag-api
+
+    name: biochar-rag-api    env: python
+
+    env: python    buildCommand: "pip install -r requirements.txt"
+
+    buildCommand: "pip install -r requirements.txt"    startCommand: "gunicorn biochar_rag_api:app --host 0.0.0.0 --port $PORT --workers 2 --worker-class uvicorn.workers.UvicornWorker"
+
+    startCommand: "gunicorn biochar_rag_api:app --host 0.0.0.0 --port $PORT --workers 2 --worker-class uvicorn.workers.UvicornWorker"    plan: starter  # Adjust based on your needs
+
+    plan: starter    
+
+        envVars:
+
+    envVars:      - key: PYTHON_VERSION
+
+      - key: PYTHON_VERSION        value: "3.11"
+
+        value: "3.11"      - key: TOGETHER_API_KEY
+
+      - key: TOGETHER_API_KEY        sync: false  # Set this manually in Render dashboard
+
+        sync: false  # Set this manually in Render dashboard      - key: MAX_CONTEXT_CHUNKS
+
+      - key: MAX_CONTEXT_CHUNKS        value: "5"
+
+        value: "5"      - key: MAX_TOKENS
+
+      - key: MAX_TOKENS        value: "1000"
+
+        value: "1000"      - key: TEMPERATURE
+
+      - key: TEMPERATURE        value: "0.7"
+
+        value: "0.7"      - key: EMBEDDING_MODEL
+
+      - key: EMBEDDING_MODEL        value: "sentence-transformers/all-MiniLM-L6-v2"
+
+        value: "BAAI/bge-small-en-v1.5"
+
+      - key: TOKENIZERS_PARALLELISM    # Health check configuration
+
+        value: "false"    healthCheckPath: "/health"
+
+    
+
+    # Health check configuration    # Auto-deploy on git push
+
+    healthCheckPath: "/health"    autoDeploy: true
+    
+    # Auto-deploy on git push
+    autoDeploy: true
+
+  # Streamlit Frontend Service
+  - type: web
+    name: biochar-rag-frontend
+    env: python
+    buildCommand: "pip install streamlit requests"
+    startCommand: "streamlit run streamlit_app.py --server.port $PORT --server.address 0.0.0.0"
+    plan: starter
+    
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11"
+      - key: API_URL
+        value: "https://biochar-rag-api.onrender.com"  # Update this with your actual API service URL
+    
+    # Auto-deploy on git push
+    autoDeploy: true
